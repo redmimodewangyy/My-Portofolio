@@ -81,10 +81,10 @@ const fileInput     = document.getElementById('fileInput');
 // Contoh: jika file MP3 bernama "multo.mp3", taruh di folder yang sama dengan index.html.
 // Jika belum ada file MP3-nya, lagu tidak akan bisa diputar sampai file tersedia.
 let playlist = [
-  { name: 'Multo',                       artist: 'Cup of Joe', file: 'Multo.mp3',                   cover: null, url: 'Multo.mp3' },
-  { name: 'everything u are',            artist: 'Hindia',     file: 'everything-u-are.mp3',         cover: null, url: 'everything-u-are.mp3' },
-  { name: 'Cincin',                      artist: 'Hindia',     file: 'Cincin.mp3',                   cover: null, url: 'Cincin.mp3' },
-  { name: 'The Winner Takes It All',     artist: 'ABBA',       file: 'The-Winner-Takes-It-All.mp3',  cover: null, url: 'The-Winner-Takes-It-All.mp3' },
+  { name: 'Multo',                       artist: 'Cup of Joe', file: 'Multo.mp3',                   cover: "Multo-icon.jpg", url: 'Multo.mp3' },
+  { name: 'everything u are',            artist: 'Hindia',     file: 'everything-u-are.mp3',         cover: "everything-u-are-icon.jpg", url: 'everything-u-are.mp3' },
+  { name: 'Cincin',                      artist: 'Hindia',     file: 'Cincin.mp3',                   cover: "Cincin-icon.jpg", url: 'Cincin.mp3' },
+  { name: 'The Winner Takes It All',     artist: 'ABBA',       file: 'The-Winner-Takes-It-All.mp3',  cover: "The-Winner-Takes-It-All-icon.jpg", url: 'The-Winner-Takes-It-All.mp3' },
 ];
 
 let currentIndex = 0;
@@ -237,64 +237,6 @@ audio.addEventListener('loadedmetadata', () => {
 audio.addEventListener('ended', () => {
   loadAndPlay(isShuffle ? randomOther() : (currentIndex + 1) % playlist.length);
 });
-
-// ── Add from device ───────────────────────────
-fileInput.addEventListener('change', (e) => {
-  const files = Array.from(e.target.files);
-  if (!files.length) return;
-
-  const startIndex = playlist.length;
-
-  files.forEach(file => {
-    const url   = URL.createObjectURL(file);
-    const raw   = file.name.replace(/\.[^/.]+$/, '');
-    let name = raw, artist = 'Unknown';
-    if (raw.includes(' - ')) {
-      const parts = raw.split(' - ');
-      artist = parts[0].trim();
-      name   = parts.slice(1).join(' - ').trim();
-    }
-    playlist.push({ name, artist, file: file.name, cover: null, url });
-    tryExtractCover(file, playlist.length - 1);
-  });
-
-  renderPlaylist();
-
-  // Auto-load first added track if nothing is playing
-  if (!isPlaying) loadAndPlay(startIndex);
-
-  fileInput.value = '';
-});
-
-// ── Cover art from MP3 tags (jsmediatags) ─────
-function tryExtractCover(file, index) {
-  if (window.jsmediatags) { readCover(file, index); return; }
-  const s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js';
-  s.onload = () => readCover(file, index);
-  document.head.appendChild(s);
-}
-
-function readCover(file, index) {
-  try {
-    window.jsmediatags.read(file, {
-      onSuccess(tag) {
-        const pic = tag.tags && tag.tags.picture;
-        if (!pic) return;
-        const base64 = btoa(pic.data.reduce((s, b) => s + String.fromCharCode(b), ''));
-        const cover  = `data:${pic.format};base64,${base64}`;
-        playlist[index].cover = cover;
-        if (index === currentIndex) {
-          playerThumb.src = cover;
-          playerThumb.style.display = 'block';
-          playerThumbPh.classList.add('hidden');
-        }
-        renderPlaylist();
-      },
-      onError() {}
-    });
-  } catch (e) {}
-}
 
 // ── Init ──────────────────────────────────────
 renderPlaylist();
