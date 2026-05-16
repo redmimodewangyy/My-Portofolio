@@ -81,13 +81,10 @@ const fileInput     = document.getElementById('fileInput');
 // Contoh: jika file MP3 bernama "multo.mp3", taruh di folder yang sama dengan index.html.
 // Jika belum ada file MP3-nya, lagu tidak akan bisa diputar sampai file tersedia.
 let playlist = [
-  { name: 'Multo',                       artist: 'Cup of Joe', file: 'multo.mp3',                   cover: null, url: null },
+  { name: 'Multo',                       artist: 'Cup of Joe', file: 'Multo.mp3',                   cover: null, url: null },
   { name: 'everything u are',            artist: 'Hindia',     file: 'everything-u-are.mp3',         cover: null, url: null },
-  { name: 'Lihat Kebunku (Taman Bunga)', artist: 'Aku Jeje',   file: 'lihat-kebunku.mp3',            cover: null, url: null },
-  { name: '33x',                         artist: 'Perunggu',   file: '33x.mp3',                      cover: null, url: null },
-  { name: 'Cincin',                      artist: 'Hindia',     file: 'cincin.mp3',                   cover: null, url: null },
-  { name: 'Nina',                        artist: 'Feast',      file: 'nina.mp3',                     cover: null, url: null },
-  { name: 'The Winner Takes It All',     artist: 'ABBA',       file: 'the-winner-takes-it-all.mp3',  cover: null, url: null },
+  { name: 'Cincin',                      artist: 'Hindia',     file: 'Cincin.mp3',                   cover: null, url: null },
+  { name: 'The Winner Takes It All',     artist: 'ABBA',       file: 'The-Winner-Takes-It-All.mp3',  cover: null, url: null },
 ];
 
 let currentIndex = 0;
